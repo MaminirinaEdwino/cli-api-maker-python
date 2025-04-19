@@ -22,7 +22,7 @@ async def get_%s_by_id(id: int, db: Session = Depends(get_db)):
 	db_%s = db.query(%s).filter(%s.id == id).first()
 	if not db_%s:
 		raise HTTPException(status_code=404, detail="%s not found")
-	return %s`, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name)
+	return db_%s`, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name)
 }
 
 func WritePost(model_name string) string {
