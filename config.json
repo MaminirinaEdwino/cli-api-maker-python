@@ -1,0 +1,26 @@
+{
+    "Api_name": "My api",
+    "Api_version": "0.0.0",
+    "Api_description": "My api api description",
+    "Api_reload": true,
+    "Host": "0.0.0.0",
+    "Port": "8000",
+    "Db": {
+        "Db_name": "My api_db",
+        "Sgbd": "sqlite",
+        "Async": false
+    },
+    "Models": [
+        {
+            "Model_name": "todo",
+            "Attributs": [
+                {
+                    "Attribut_name": "name",
+                    "Attributs_type": "str"
+                }
+            ]
+        }
+    ],
+    "Template_dirs": "template",
+    "Static_files_dirs": "static_file"
+}
