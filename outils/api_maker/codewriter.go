@@ -44,6 +44,7 @@ class UserDB(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     full_name = Column(String)
+    role = Column(String, default="user") 
     is_active = Column(Boolean, default=True)
     hashed_password = Column(String)
 
@@ -54,12 +55,18 @@ class User(BaseModel):
     email: str
     full_name: Optional[str] = None
     is_active: bool = True
+    role: str = "user"  # Default role is 'user'
+    class Config:
+        from_attributes = True
 
 class UserCreate(BaseModel):
     username: str
     password: str
     email: str
     full_name: Optional[str] = None
+    role: str = "user"  # Default role is 'user'
+    class Config:
+        from_attributes = True
 
 class Token(BaseModel):
     access_token: str
@@ -171,6 +178,14 @@ async def get_current_user(db: SessionLocal = Depends(get_db), token: str = Depe
 async def get_current_active_user(current_user: UserDB = Depends(get_current_user)):
     if not current_user.is_active:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user")
+    return current_user
+async def get_current_active_admin(current_user: UserDB = Depends(get_current_user)):
+    if not current_user.is_active or current_user.role != "admin":
+        raise HTTPException(status_code=400, detail="Inactive user or not an admin")
+    return current_user
+async def get_current_active_user_or_admin(current_user: UserDB = Depends(get_current_user)):
+    if not current_user.is_active or current_user.role not in ["admin", "user"]:
+        raise HTTPException(status_code=400, detail="Inactive user or not an admin")
     return current_user
 
 	`
