@@ -43,9 +43,9 @@ async def update_%s(id: int, %s_put: %s_update, db: Session = Depends(get_db)):
 	db_%s = db.query(%s).filter(%s.id == id).first()
 	if not db_%s:
 		raise HTTPException(status_code=404, detail="%s not found")
-	for key, value in %s_update.model_dump().items():
+	for key, value in %s_put.model_dump().items():
 		if value is not None:
-			setattr(%s, key, value)
+			setattr(db_%s, key, value)
 	db.commit()
 	db.refresh(db_%s)
 	return db_%s`, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name, model_name)
